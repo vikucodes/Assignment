@@ -1,0 +1,54 @@
+package Test_Scenerio;
+
+import org.openqa.selenium.JavascriptExecutor;
+import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.WebElement;
+import org.openqa.selenium.chrome.ChromeDriver;
+import org.testng.Assert;
+import org.testng.annotations.AfterTest;
+import org.testng.annotations.BeforeTest;
+import org.testng.annotations.Test;
+
+import java.time.Duration;
+
+public class Test_Scenerio001_TestCase {
+    WebDriver driver;
+
+    @BeforeTest
+    public void setUp() {
+        driver = new ChromeDriver();
+        driver.manage().window().maximize();
+        driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(10));
+    }
+
+    @Test
+    public void testSignUpButtonVisibility() throws InterruptedException {
+        driver.get("https://v0-button-to-open-v0-home-page-h5dizpkwp.vercel.app/");
+
+        // Click the main button
+        WebElement mainButton = driver.findElementByTagName("button");
+        mainButton.click();
+
+        // Wait for a few seconds to allow shadow DOM to render
+        Thread.sleep(2000);
+
+        JavascriptExecutor js = (JavascriptExecutor) driver;
+
+        // Stepwise shadow DOM access
+        WebElement appRoot = (WebElement) js.executeScript("return document.querySelector('app-root')");
+        WebElement appRootShadow = (WebElement) js.executeScript("return arguments[0].shadowRoot", appRoot);
+        WebElement appHome = (WebElement) js.executeScript("return arguments[0].querySelector('app-home')", appRootShadow);
+        WebElement appHomeShadow = (WebElement) js.executeScript("return arguments[0].shadowRoot", appHome);
+        WebElement signUpBtn = (WebElement) js.executeScript("return arguments[0].querySelector('button')", appHomeShadow);
+
+        Assert.assertTrue(signUpBtn.isDisplayed(), "Sign Up button is not visible!");
+        System.out.println("✅ Sign Up button is visible!");
+    }
+
+    @AfterTest
+    public void tearDown() {
+        if (driver != null) {
+            driver.quit();
+        }
+    }
+}

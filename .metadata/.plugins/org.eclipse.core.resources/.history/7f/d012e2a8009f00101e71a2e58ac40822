@@ -1,0 +1,54 @@
+package Test_Scenerio;
+
+import org.openqa.selenium.By;
+import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.WebElement;
+import org.openqa.selenium.chrome.ChromeDriver;
+import org.openqa.selenium.JavascriptExecutor;
+import org.openqa.selenium.support.ui.ExpectedConditions;
+import org.openqa.selenium.support.ui.WebDriverWait;
+import org.testng.Assert;
+import org.testng.annotations.AfterTest;
+import org.testng.annotations.BeforeTest;
+import org.testng.annotations.Test;
+
+import java.time.Duration;
+import java.util.List;
+
+public class Test_Scenerio001_TestCase {
+    WebDriver driver;
+
+    @BeforeTest
+    public void setUp() {
+        driver = new ChromeDriver();
+        driver.manage().window().maximize();
+    }
+
+    @Test
+    public void testSignUpButtonVisibility() {
+        driver.get("https://v0-button-to-open-v0-home-page-h5dizpkwp.vercel.app/");
+
+        // Click on the main button
+        WebElement mainButton = driver.findElement(By.tagName("button"));
+        mainButton.click();
+
+        // Wait for some time for modal / page transition
+        WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(20));
+
+        // Use JavaScript to check if button exists (works for shadow DOM / dynamic content)
+        WebElement signUpBtn = wait.until(driver -> {
+            List<WebElement> buttons = driver.findElements(By.xpath("//button[contains(text(),'Sign Up')]"));
+            return buttons.size() > 0 ? buttons.get(0) : null;
+        });
+
+        Assert.assertTrue(signUpBtn.isDisplayed(), "Sign Up button is not visible!");
+        System.out.println("✅ Sign Up button is visible!");
+    }
+
+    @AfterTest
+    public void tearDown() {
+        if (driver != null) {
+            driver.quit();
+        }
+    }
+}

@@ -1,0 +1,41 @@
+
+import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.WebElement;
+import org.openqa.selenium.chrome.ChromeDriver;
+import org.testng.Assert;
+import org.testng.annotations.AfterTest;
+import org.testng.annotations.BeforeTest;
+import org.testng.annotations.Test;
+
+
+public class Test_Scenerio001_TestCase{
+    WebDriver driver;
+
+    @BeforeTest
+    public void setUp() {
+       
+        driver = new ChromeDriver();
+        driver.manage().window().maximize();
+    }
+
+    @Test
+    public void testSignUpButtonVisibility() {
+        driver.get("https://v0-button-to-open-v0-home-page-h5dizpkwp.vercel.app/");
+
+        // Click on the main button
+        WebElement button = driver.findElement(By.tagName("button"));
+        button.click();
+
+        // Verify Sign Up button appears on the next page
+        WebElement signUpBtn = driver.findElement(By.xpath("//button[text()='Sign Up']"));
+        Assert.assertTrue(signUpBtn.isDisplayed(), " Sign Up button is not visible!");
+        System.out.println("✅ Sign Up button is visible!");
+    }
+
+    @AfterTest
+    public void tearDown() {
+        if (driver != null) {
+            driver.quit();
+        }
+    }
+}

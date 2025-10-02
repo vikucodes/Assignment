@@ -1,0 +1,40 @@
+package ArrayList;
+
+
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.List;
+
+public class find_max {
+
+	public static void main(String[] args) {
+	 int [] arr= {10,15,12,3,2,5,116,13,1315,64};
+	 
+	 int max_no=0;
+	 int min_no=0;
+	 
+	 for(int i=0;i<arr.length;i++) {
+		 
+		 if(arr[i]>max_no) {
+			 max_no=arr[i];
+		 }else if(arr[i]<min_no) {
+			 min_no=arr[i];
+			 
+		 }
+		 
+	 }
+	 
+	 
+	
+	 
+System.out.println("Maximun no. is : "+max_no);
+	System.out.println("Minimun no. is : "+min_no);
+		 
+	 
+
+	 
+
+	}
+
+}
